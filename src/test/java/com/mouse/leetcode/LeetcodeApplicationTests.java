@@ -45,6 +45,9 @@ class LeetcodeApplicationTests {
 
 		int r2 = dPService.minimumTotalON2(params);
 		log.info("r2={}", r2);
+
+		int r3 = dPService.minimumTotalON(params);
+		log.info("r3={}", r3);
 	}
 
 }

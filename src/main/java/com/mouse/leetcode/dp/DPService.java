@@ -75,16 +75,16 @@ public class DPService {
         int[] f = new int[n];
         f[0] = triangle.get(0).get(0);
         for (int i = 1; i < n; ++i) {
-            f[0] = f[0] + triangle.get(i).get(0);
-            for (int j = 1; j < i; ++j) {
-                f[j] = Math.min(f[prev][j - 1], f[prev][j]) + triangle.get(i).get(j);
-            }
             f[i] = f[i - 1] + triangle.get(i).get(i);
+            for (int j = i - 1; j > 0; --j) {
+                f[j] = Math.min(f[j - 1], f[j]) + triangle.get(i).get(j);
+            }
+            f[0] = f[0] + triangle.get(i).get(0);
         }
         log.info("f={}", f);
-        int minTotal = f[(n - 1) % 2][0];
+        int minTotal = f[0];
         for (int i = 1; i < n; ++i) {
-            minTotal = Math.min(minTotal, f[(n - 1) % 2][i]);
+            minTotal = Math.min(minTotal, f[i]);
         }
         return minTotal;
     }
