@@ -1,6 +1,7 @@
 package com.mouse.leetcode;
 
-import com.mouse.leetcode.dp.DPService;
+import com.mouse.leetcode.dp.IlPe0qService;
+import com.mouse.leetcode.dp.SoupServings;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +15,10 @@ import java.util.List;
 class LeetcodeApplicationTests {
 
 	@Resource
-	com.mouse.leetcode.dp.DPService dPService;
+	IlPe0qService dPService;
+
+	@Resource
+	com.mouse.leetcode.dp.SoupServings soupServings;
 
 	@Test
 	void minimumTotal() {
@@ -50,4 +54,16 @@ class LeetcodeApplicationTests {
 		log.info("r3={}", r3);
 	}
 
+	@Test
+	void soupServings() {
+		double r = 0.0;
+		r = soupServings.soupServings(20);
+		log.info("r={}", r);
+
+		r = soupServings.soupServings(50);
+		log.info("r={}", r);
+
+		r = soupServings.soupServings(500);
+		log.info("r={}", r);
+	}
 }

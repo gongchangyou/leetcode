@@ -6,13 +6,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
+ * 三角形中最小路径之和
+ * https://leetcode-cn.com/problems/IlPe0q/
  * @author gongchangyou
  * @version 1.0
  * @date 2021/12/16 11:23 下午
  */
 @Slf4j
 @Service
-public class DPService {
+public class IlPe0qService {
 
 
     /**
