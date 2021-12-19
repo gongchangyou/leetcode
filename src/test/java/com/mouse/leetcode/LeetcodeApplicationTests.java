@@ -1,7 +1,9 @@
 package com.mouse.leetcode;
 
 import com.mouse.leetcode.dp.IlPe0qService;
+import com.mouse.leetcode.dp.MinCostClimbingStairs;
 import com.mouse.leetcode.dp.SoupServings;
+import com.sun.source.tree.BinaryTree;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -58,12 +60,35 @@ class LeetcodeApplicationTests {
 	void soupServings() {
 		double r = 0.0;
 		r = soupServings.soupServings(20);
-		log.info("r={}", r);
+		log.info("r={} time={} nanoTime={}", r, System.currentTimeMillis(),System.nanoTime());
+		r = soupServings.soupServings2(20);
+		log.info("r={} time={} nanoTime={}", r, System.currentTimeMillis(),System.nanoTime());
 
 		r = soupServings.soupServings(50);
-		log.info("r={}", r);
+		log.info("r={} time={} nanoTime={}", r, System.currentTimeMillis(),System.nanoTime());
+		r = soupServings.soupServings2(50);
+		log.info("r={} time={} nanoTime={}", r, System.currentTimeMillis(),System.nanoTime());
 
 		r = soupServings.soupServings(500);
+		log.info("r={} time={} nanoTime={}", r, System.currentTimeMillis(),System.nanoTime());
+		r = soupServings.soupServings2(500);
+		log.info("r={} time={} nanoTime={}", r, System.currentTimeMillis(),System.nanoTime());
+	}
+
+	@Resource
+	com.mouse.leetcode.dp.MinCostClimbingStairs minCostClimbingStairs;
+
+	@Test
+	void minCostClimbingStairs() {
+		int  r= 0;
+		r= minCostClimbingStairs.minCostClimbingStairs(new int[] {
+				10, 15, 20
+		});
+		log.info("r={}", r);
+
+		r= minCostClimbingStairs.minCostClimbingStairs(new int[] {
+				1, 100, 1, 1, 1, 100, 1, 1, 100, 1
+		});
 		log.info("r={}", r);
 	}
 }
