@@ -9,6 +9,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 
 /**
@@ -25,6 +30,8 @@ import java.util.ArrayList;
 @Slf4j
 @Service
 public class Crawl implements CommandLineRunner {
+    static final String DIR = "../dp/";
+//    static final String DIR = "/Users/gongchangyou/Nutstore Files/.symlinks/坚果云/code/leetcode/dp";
     /**
      * Callback used to run the bean.
      *
@@ -38,38 +45,75 @@ public class Crawl implements CommandLineRunner {
         driver.get("https://leetcode-cn.com/tag/dynamic-programming/problemset/");
 
         val mainHandler = driver.getWindowHandle();//保留一下 待会儿留着翻页
+        var i = 10;
+        while (i > 0) {
 
-        Thread.sleep(5000L);
-        //遍历当前页面并在新标签页打开所有的题目
-        var problemList = driver.findElementsByCssSelector("tr > td:nth-child(2) > div > div > div > a");
-        problemList = problemList.subList(0, 3);//test
-        problemList.forEach(problem -> {
-            try {
-                val url = problem.getAttribute("href");
-                log.info("url={}", url);
+            Thread.sleep(5000L);
+            //遍历当前页面并在新标签页打开所有的题目
+            var problemList = driver.findElementsByCssSelector("tr > td:nth-child(2) > div > div > div > a");
+            problemList = problemList.subList(0, 3);//test
+            problemList.forEach(problem -> {
+                try {
+                    val url = problem.getAttribute("href");
+                    log.info("url={}", url);
 
-                JavascriptExecutor js = (JavascriptExecutor) driver;
-                js.executeScript("window.open(\""+url+"\");");
-            } catch(Exception e) {
-                log.info("open new tab error ", e);
-            }
-        });
-        Thread.sleep(5000L);
-        //遍历所有的标签页 读取题目内容和题解
+                    JavascriptExecutor js = (JavascriptExecutor) driver;
+                    js.executeScript("window.open(\"" + url + "\");");
+                } catch (Exception e) {
+                    log.info("open new tab error ", e);
+                }
+            });
+            Thread.sleep(5000L);
+            //遍历所有的标签页 读取题目内容和题解
 
-        driver.getWindowHandles().forEach(windowHandler->{
-            if (!windowHandler.equals(mainHandler)) {
-                val driverTmp = driver.switchTo().window(windowHandler);
-                //TODO 读取题目内容
-                val problemContent = driverTmp.findElement(By.id("question-detail-main-tabs"));
-                log.info("problemContent text= {}", problemContent.getText());
-                //保存 题解
-            }
-        });
+            driver.getWindowHandles().forEach(windowHandler -> {
+                if (!windowHandler.equals(mainHandler)) {
+                    val driverTmp = driver.switchTo().window(windowHandler);
+                    //读取题目内容
+                    val problemElement = driverTmp.findElement(By.id("question-detail-main-tabs"));
+                    val problem = problemElement.getText();
+                    log.info("problemContent text= {}", problem);
+                    //保存 题解
+                    driverTmp.findElement(By.cssSelector("#question-detail-main-tabs > div.css-eminw3-TabViewHeader.e16udao1 > div > div:nth-child(3)")).click();
+                    try {
+                        Thread.sleep(5000L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    driverTmp.findElement(By.cssSelector("#question-detail-main-tabs > div.css-fwb2av-layer1.css-12hreja-TabContent.e16udao5 > div > div.css-qcz676-ArticleListWrapper.e1cbkjwn0 > div:nth-child(1) > div > div.css-40k3xe-Header.e19miya84 > h3 > a")).click();
+                    try {
+                        Thread.sleep(5000L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    val solution = driverTmp.findElement(By.cssSelector("#lc-home > div > div.main__1pRE > div.css-wfkj6v-Content.e1aolq224 > div > div.css-1gcn2k5-RightContainer.e1aolq221 > div.css-cqyrzo-Container.e1wapfl0 > div > div.css-11urcqv-PageWrapper.ezv7z181 > div > div:nth-child(1) > div.css-1jiyb8u-ContentContainer.e1ak08xt0")).getText();
+
+                    val urlList = driverTmp.getCurrentUrl().split("/");
+                    val filename = urlList[urlList.length - 1];
+                    val file = new File(DIR + filename + ".txt");
+                    if (!file.exists()) {
+                        try {
+                            file.createNewFile();
+                            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                            BufferedWriter bw = new BufferedWriter(fw);
+                            bw.write("题目: \n" + problem + "\n");
+                            bw.write("答案: \n" + solution + "\n");
+                            bw.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    driverTmp.close();
+                }
+            });
 
 
-        val nextPage = driver.findElementByCssSelector("#lc-content > div > div.css-1ezka95-TableContainer.ermji1u1 > div > section > div > div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 > div > div > div > ul > li.ant-pagination-next");
-        nextPage.click();
+            val nextPage = driver.findElementByCssSelector("#lc-content > div > div.css-1ezka95-TableContainer.ermji1u1 > div > section > div > div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 > div > div > div > ul > li.ant-pagination-next");
+            nextPage.click();
+            
+            i--;
+        }
 //        val problemList = driver.findElementsByCssSelector("#lc-content > div > div.css-1ezka95-TableContainer.ermji1u1 > div > section > div > div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 > div > div > div > div > div > div > table > tbody > tr:nth-child(1) > td:nth-child(2) > div > div > div");
 //        log.info("problemList={}", problemList);
 //        problemList.forEach(problem -> {
