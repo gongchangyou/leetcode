@@ -41,8 +41,8 @@ public class Crawl implements CommandLineRunner {
 
         Thread.sleep(5000L);
         //遍历当前页面并在新标签页打开所有的题目
-        val problemList = driver.findElementsByCssSelector("tr > td:nth-child(2) > div > div > div > a");
-        problemList.subList(0, 3);//test
+        var problemList = driver.findElementsByCssSelector("tr > td:nth-child(2) > div > div > div > a");
+        problemList = problemList.subList(0, 3);//test
         problemList.forEach(problem -> {
             try {
                 val url = problem.getAttribute("href");
