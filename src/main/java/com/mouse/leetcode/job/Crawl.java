@@ -47,15 +47,13 @@ public class Crawl implements CommandLineRunner {
         driver.get("https://leetcode-cn.com/tag/dynamic-programming/problemset/");
 
         val mainHandler = driver.getWindowHandle();//保留一下 待会儿留着翻页
-
         var mainDriver = driver.switchTo().window(mainHandler);
 
         var i = 10;
         while (i > 0) {
-
             Thread.sleep(5000L);
             //遍历当前页面并在新标签页打开所有的题目
-            var problemList = driver.findElementsByCssSelector("tr > td:nth-child(2) > div > div > div > a");
+            var problemList = mainDriver.findElements(By.cssSelector("tr > td:nth-child(2) > div > div > div > a"));
             //            problemList = problemList.subList(0, 3);//test
             for (val problem : problemList) {
                 val url = problem.getAttribute("href");
@@ -113,6 +111,7 @@ public class Crawl implements CommandLineRunner {
                         }
                     }
                 });
+                driver.switchTo().window(mainHandler);
             }
 
             mainDriver = driver.switchTo().window(mainHandler);
