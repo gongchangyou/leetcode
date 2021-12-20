@@ -59,8 +59,9 @@ public class Crawl implements CommandLineRunner {
 
         driver.getWindowHandles().forEach(windowHandler->{
             if (!windowHandler.equals(mainHandler)) {
+                val driverTmp = driver.switchTo().window(windowHandler);
                 //TODO 读取题目内容
-                val problemContent = driver.findElementById("question-detail-main-tabs");
+                val problemContent = driverTmp.findElement(By.cssSelector("question-detail-main-tabs"));
                 log.info("problemContent text= {}", problemContent.getText());
                 //保存 题解
             }
