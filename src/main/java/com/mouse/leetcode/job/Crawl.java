@@ -42,6 +42,7 @@ public class Crawl implements CommandLineRunner {
         Thread.sleep(5000L);
         //遍历当前页面并在新标签页打开所有的题目
         val problemList = driver.findElementsByCssSelector("tr > td:nth-child(2) > div > div > div > a");
+        problemList.subList(0, 3);//test
         problemList.forEach(problem -> {
             try {
                 val url = problem.getAttribute("href");
@@ -55,10 +56,16 @@ public class Crawl implements CommandLineRunner {
         });
         Thread.sleep(5000L);
         //遍历所有的标签页 读取题目内容和题解
-        //TODO 读取题目内容
-        val problemContent = driver.findElementById("question-detail-main-tabs");
-        log.info("problemContent text= {}", problemContent.getText());
-        //保存 题解
+
+        driver.getWindowHandles().forEach(windowHandler->{
+            if (!windowHandler.equals(mainHandler)) {
+                //TODO 读取题目内容
+                val problemContent = driver.findElementById("question-detail-main-tabs");
+                log.info("problemContent text= {}", problemContent.getText());
+                //保存 题解
+            }
+        });
+
 
         val nextPage = driver.findElementByCssSelector("#lc-content > div > div.css-1ezka95-TableContainer.ermji1u1 > div > section > div > div.css-d8889y-antdPaginationOverride-layer1-dropdown-layer1-hoverOverlayBg-layer1-card-layer1-layer0 > div > div > div > ul > li.ant-pagination-next");
         nextPage.click();
