@@ -94,15 +94,15 @@ public class Crawl implements CommandLineRunner {
                             if (!file.exists()) {
                                 try {
                                     file.createNewFile();
-                                    FileWriter fw = new FileWriter(file.getAbsoluteFile());
-                                    BufferedWriter bw = new BufferedWriter(fw);
-                                    bw.write("题目: \n" + problemText + "\n");
-                                    bw.write("答案: \n" + solution + "\n");
-                                    bw.close();
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
                             }
+                            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                            BufferedWriter bw = new BufferedWriter(fw);
+                            bw.write("题目: \n" + problemText + "\n");
+                            bw.write("答案: \n" + solution + "\n");
+                            bw.close();
 
                         } catch (Exception e) {
                             log.error("url={}", driverTmp.getCurrentUrl(), e);
