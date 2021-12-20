@@ -96,7 +96,7 @@ public class Crawl implements CommandLineRunner {
                                     file.createNewFile();
                                     FileWriter fw = new FileWriter(file.getAbsoluteFile());
                                     BufferedWriter bw = new BufferedWriter(fw);
-                                    bw.write("题目: \n" + problem + "\n");
+                                    bw.write("题目: \n" + problemText + "\n");
                                     bw.write("答案: \n" + solution + "\n");
                                     bw.close();
                                 } catch (IOException e) {
