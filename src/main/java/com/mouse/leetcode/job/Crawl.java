@@ -7,6 +7,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -31,6 +32,7 @@ import java.util.Collection;
  */
 @Slf4j
 @Service
+@ConditionalOnProperty(name = "job", havingValue = "crawl")
 public class Crawl implements CommandLineRunner {
     static final String DIR = "../dp/";
 //    static final String DIR = "/Users/gongchangyou/Nutstore Files/.symlinks/坚果云/code/leetcode/dp";
