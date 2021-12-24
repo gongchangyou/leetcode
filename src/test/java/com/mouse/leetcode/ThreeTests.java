@@ -21,7 +21,12 @@ class ThreeTests {
 	void threeMax() {
 		int[] dp = {1,2,3,4,4};
 
-		val r = threeMax.solution(dp);
+		var r = threeMax.solution(dp);
+		log.info("r={}", r);
+
+		int[] dp1 = {100, 10, 1, 200, 3, 1};
+
+		r = threeMax.solution(dp1);
 
 		log.info("r={}", r);
 	}
